@@ -1,11 +1,12 @@
 Summary:
-HomeMate AI v0.2.1 Full UA/RU/EN Catalog Localization
+HomeMate AI v0.2.2 Clean Root + Version Sync
 
 Description:
-- Fully localized plant catalog metadata
-- Ukrainian mode now shows plant family, light, watering and humidity in Ukrainian
-- Added RU and EN enum localization dictionaries
-- Localized recipe categories and time suffixes
+- Removed duplicated versioned CHANGELOG files
+- Added one canonical CHANGELOG.md
+- Synced app version to v0.2.2 in backend and UI
+- Preserved full UA/RU/EN localization
 - Preserved HomeMate AI icon and PWA assets
-- Preserved Railway Docker/start.sh deployment
-- Updated HomeMate AI to v0.2.1
+- Preserved plant, pest, ingredient and recipe catalogs
+- Preserved AI Vision and Railway Docker/start.sh deployment
+- Cleaned repository root for GitHub Desktop

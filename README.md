@@ -1,4 +1,4 @@
-# HomeMate AI v0.2.1 Knowledge Catalog
+# HomeMate AI v0.2.2 Knowledge Catalog
 
 Liquid Glass home assistant with UA/RU/EN localization.
 
@@ -22,5 +22,10 @@ Healthcheck: `/api/health`
 Do not set a custom Railway Start Command.
 
 
-## v0.2.1
-Full localization of catalog enum values for Ukrainian, Russian and English. Ukrainian mode no longer exposes English plant care/category labels.
+
+
+## Repository hygiene
+- Keep only one `CHANGELOG.md` in the repository root.
+- Do not create `CHANGELOG-vX.Y.Z.md` files in future releases.
+- `GITHUB_DESKTOP_COMMIT.txt` is overwritten for every new build.
+- ZIP archives contain only the current clean repository root.
