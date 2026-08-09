@@ -6,7 +6,7 @@ import sqlite3, json, os, re
 
 BASE=Path(__file__).parent
 DB=BASE/"data"/"homemate.db"
-app=FastAPI(title="HomeMate AI", version="0.1.1")
+app=FastAPI(title="HomeMate AI", version="0.1.2")
 app.mount("/static", StaticFiles(directory=BASE/"static"), name="static")
 
 def rows(sql,args=()):
@@ -18,7 +18,7 @@ def rows(sql,args=()):
 def index(): return FileResponse(BASE/"static"/"index.html")
 
 @app.get("/api/health")
-def health(): return {"ok":True,"app":"HomeMate AI","version":"0.1.1","languages":["uk","ru","en"]}
+def health(): return {"ok":True,"app":"HomeMate AI","version":"0.1.2","languages":["uk","ru","en"]}
 
 @app.get("/api/locale/{lang}")
 def locale(lang:str):

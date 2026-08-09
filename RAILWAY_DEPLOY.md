@@ -1,23 +1,29 @@
-# Railway deployment — HomeMate AI v0.1.1
+# Railway deployment — HomeMate AI v0.1.2
 
-## Why v0.1.0 failed
-Railway selected `mise` to install the exact Python version from `runtime.txt`.
-The build stopped while verifying the GitHub artifact for CPython 3.12.7.
+## Root cause fixed
+Deploy logs showed:
 
-## Fix in v0.1.1
-- removed `runtime.txt`;
-- added a Dockerfile based on `python:3.12-slim`;
-- added `railway.json` forcing the Dockerfile builder;
-- app listens on Railway's `$PORT`;
-- added `/api/health` as the Railway health check.
+`Error: Invalid value for '--port': '$PORT' is not a valid integer.`
 
-## GitHub Desktop → Railway
-1. Replace the repository contents with the clean contents of this ZIP.
-2. Commit and Push to `main`.
-3. Railway should detect `railway.json` + `Dockerfile` and build with Docker.
-4. No Python version variable is required in Railway.
-5. In Railway Variables you do not need to add `PORT`; Railway supplies it automatically.
+The previous Railway `startCommand` passed `$PORT` literally to Uvicorn.
 
-If an old service still has a custom Build Command or Start Command, remove those overrides
-or set the Start Command to:
-`uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+## v0.1.2 startup path
+Railway -> Dockerfile -> `/app/start.sh` -> Uvicorn
+
+`start.sh` expands `${PORT:-8000}` before starting Uvicorn and rejects non-numeric PORT values.
+
+## Important Railway settings
+- Builder: Dockerfile (provided by railway.json)
+- Health check: `/api/health`
+- Do NOT add a custom Start Command in Railway Settings.
+- Do NOT create your own PORT variable. Railway provides PORT automatically.
+- If an old Start Command is still saved in Railway UI, clear it so Docker CMD can run.
+
+## GitHub Desktop -> Railway
+1. Replace repository contents with this ZIP's clean root.
+2. Commit.
+3. Push to `main`.
+4. Railway redeploys automatically.
+5. Expected deploy log includes:
+   `Starting HomeMate AI on 0.0.0.0:<number>`
+6. Healthcheck should then pass on `/api/health`.

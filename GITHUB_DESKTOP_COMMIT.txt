@@ -1,11 +1,11 @@
 Summary:
-HomeMate AI v0.1.1 Railway deployment fix
+HomeMate AI v0.1.2 Railway healthcheck fix
 
 Description:
-- Fixed Railway build failure caused by mise Python 3.12.7 installation
-- Removed runtime.txt to prevent mise from downloading an exact CPython artifact
-- Added Dockerfile based on python:3.12-slim
-- Added railway.json to force the Dockerfile builder
-- Added Railway health check at /api/health
-- Kept uvicorn bound to Railway's $PORT
-- Updated HomeMate AI version to v0.1.1
+- Fixed literal $PORT being passed to Uvicorn
+- Added start.sh with safe Railway PORT expansion
+- Added numeric PORT validation
+- Removed conflicting Railway startCommand override
+- Removed Procfile to keep a single Docker startup path
+- Kept /api/health as Railway healthcheck endpoint
+- Updated HomeMate AI version to v0.1.2
