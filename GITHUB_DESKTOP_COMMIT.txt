@@ -1,11 +1,13 @@
 Summary:
-HomeMate AI v0.1.2 Railway healthcheck fix
+HomeMate AI v0.2.0 Knowledge Catalog + AI Vision
 
 Description:
-- Fixed literal $PORT being passed to Uvicorn
-- Added start.sh with safe Railway PORT expansion
-- Added numeric PORT validation
-- Removed conflicting Railway startCommand override
-- Removed Procfile to keep a single Docker startup path
-- Kept /api/health as Railway healthcheck endpoint
-- Updated HomeMate AI version to v0.1.2
+- Added approved HomeMate AI app icon and PWA assets
+- Expanded catalog to 80 plants and 22 plant problems/pests
+- Added 62 normalized ingredients and 58 structured recipes
+- Added plant and recipe catalog search
+- Improved AI Chef matching with fridge-based recipe suggestions
+- Added photo preview and optional OpenAI Vision diagnosis
+- Kept local symptom diagnosis fallback when no API key is configured
+- Preserved proven Railway Docker/start.sh deployment
+- Updated HomeMate AI to v0.2.0

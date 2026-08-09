@@ -28,5 +28,15 @@
   "limits": "Ingredient limits",
   "diagnose": "Analyze",
   "welcome": "Good evening 👋",
-  "catalog": "Knowledge catalog"
+  "catalog": "Knowledge catalog",
+  "search_plants": "Search plants…",
+  "plant_catalog": "Plant catalog",
+  "problem_catalog": "Problems & pests",
+  "real_ai": "AI Vision",
+  "ai_ready": "AI Vision enabled",
+  "local_mode": "Local symptom knowledge",
+  "all_recipes": "All recipes",
+  "only_have": "Only what I have",
+  "allow_missing": "May buy 1 ingredient",
+  "remove": "Remove"
 }

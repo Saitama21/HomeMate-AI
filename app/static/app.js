@@ -1,29 +1,33 @@
-let lang=localStorage.getItem("hm_lang")||((navigator.language||"uk").slice(0,2)); if(!["uk","ru","en"].includes(lang))lang="uk";
-let locale={},catalog={}; let dark=localStorage.getItem("hm_theme")==="dark"; let selected=new Set();
-const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
-async function boot(){applyTheme(); $("#lang").value=$("#lang2").value=lang; await loadLocale(); await loadCatalog(); bind(); loadFridge();}
-async function loadLocale(){locale=await fetch(`/api/locale/${lang}`).then(r=>r.json()); $$("[data-i18n]").forEach(x=>x.textContent=locale[x.dataset.i18n]||x.dataset.i18n); $$("[data-placeholder]").forEach(x=>x.placeholder=locale[x.dataset.placeholder]||"");}
-async function loadCatalog(){catalog=await fetch(`/api/catalog?lang=${lang}`).then(r=>r.json()); render();}
-function render(){ $("#stats").innerHTML=`<div class="chips"><span class="chip">🌿 ${catalog.plants.length} ${locale.plants}</span><span class="chip">🩺 ${catalog.problems.length}</span><span class="chip">🥕 ${catalog.ingredients.length}</span><span class="chip">🍳 ${catalog.recipes.length}</span></div>`;
-$("#plantCards").innerHTML=catalog.plants.map(p=>`<div class="card"><div class="emoji">🌿</div><h3>${p.name}</h3><small>☀ ${p.light}</small><p>💧 ${p.water}</p></div>`).join("");
-renderRecipes(catalog.recipes);
-$("#ingredientChips").innerHTML=catalog.ingredients.map(i=>`<button class="chip" data-ing="${i.id}">${i.name}</button>`).join("");
-$("#fridgeIngredient").innerHTML=catalog.ingredients.map(i=>`<option value="${i.id}">${i.name}</option>`).join("");}
-function renderRecipes(arr){$("#recipeCards").innerHTML=arr.map(r=>`<div class="card"><div class="emoji">🍽️</div><h3>${r.name}</h3><span class="badge">⏱ ${r.minutes} min</span><p>${r.ingredients.join(" · ")}</p></div>`).join("");}
-function showPage(id){$$(".page").forEach(p=>p.classList.toggle("active",p.id===id)); $$(".nav").forEach(b=>b.classList.toggle("active",b.dataset.page===id)); window.scrollTo({top:0,behavior:"smooth"});}
-function applyTheme(){document.body.classList.toggle("dark",dark);}
-async function changeLang(v){lang=v;localStorage.setItem("hm_lang",lang);$("#lang").value=$("#lang2").value=lang;await loadLocale();await loadCatalog();await loadFridge();}
+let lang=localStorage.getItem("hm_lang")||((navigator.language||"uk").slice(0,2));if(!["uk","ru","en"].includes(lang))lang="uk";
+let locale={},plants=[],recipes=[],ingredients=[],problems=[],selected=new Set();let dark=localStorage.getItem("hm_theme")==="dark";
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+async function boot(){applyTheme();$("#lang").value=$("#lang2").value=lang;await loadLocale();await Promise.all([loadCatalogs(),loadStats(),loadHealth()]);bind();loadFridge();}
+async function loadLocale(){locale=await fetch(`/api/locale/${lang}`).then(r=>r.json());$$("[data-i18n]").forEach(x=>x.textContent=locale[x.dataset.i18n]||x.dataset.i18n);$$("[data-placeholder]").forEach(x=>x.placeholder=locale[x.dataset.placeholder]||"")}
+async function loadCatalogs(){[plants,recipes,ingredients,problems]=await Promise.all([fetch(`/api/plants?lang=${lang}`).then(r=>r.json()),fetch(`/api/recipes?lang=${lang}`).then(r=>r.json()),fetch(`/api/ingredients?lang=${lang}`).then(r=>r.json()),fetch(`/api/problems?lang=${lang}`).then(r=>r.json())]);render();}
+async function loadStats(){let s=await fetch("/api/stats").then(r=>r.json());$("#stats").innerHTML=`<div class="chips"><span class="chip">🌿 ${s.plants}</span><span class="chip">🩺 ${s.problems}</span><span class="chip">🥕 ${s.ingredients}</span><span class="chip">🍳 ${s.recipes}</span></div>`}
+async function loadHealth(){let h=await fetch("/api/health").then(r=>r.json());$("#visionBadge").textContent=h.vision_enabled?(locale.ai_ready||"AI Vision"):(locale.local_mode||"Local");}
+function render(){renderPlants(plants);renderRecipes(recipes);$("#problemCards").innerHTML=problems.map(p=>`<div class="card"><div class="emoji">🩺</div><h3>${p.name}</h3><p>${p.symptoms}</p></div>`).join("");$("#ingredientChips").innerHTML=ingredients.map(i=>`<button class="chip" data-ing="${i.id}">${i.name}</button>`).join("");$("#fridgeIngredient").innerHTML=ingredients.map(i=>`<option value="${i.id}">${i.name}</option>`).join("");}
+function human(x){return (x||"").replaceAll("_"," ")}
+function renderPlants(arr){$("#plantCards").innerHTML=arr.map(p=>`<div class="card"><div class="emoji">🌿</div><h3>${p.name}</h3><span class="badge">${human(p.family)}</span><p>☀ ${human(p.light)}<br>💧 ${human(p.water)}<br>🌡 ${p.temp[0]}–${p.temp[1]}°C · 💨 ${human(p.humidity)}</p></div>`).join("")}
+function renderRecipes(arr){$("#recipeCards").innerHTML=arr.map(r=>`<div class="card"><div class="emoji">🍽️</div><h3>${r.name}</h3><span class="badge">⏱ ${r.minutes} min</span> <span class="badge">${human(r.category)}</span><p>${r.ingredients.map(id=>ingredients.find(i=>i.id===id)?.name||id).join(" · ")}</p></div>`).join("")}
+function showPage(id){$$(".page").forEach(p=>p.classList.toggle("active",p.id===id));$$(".nav").forEach(b=>b.classList.toggle("active",b.dataset.page===id));scrollTo({top:0,behavior:"smooth"})}
+function applyTheme(){document.body.classList.toggle("dark",dark)}
+async function changeLang(v){lang=v;localStorage.setItem("hm_lang",lang);$("#lang").value=$("#lang2").value=lang;await loadLocale();await loadCatalogs();await loadStats();await loadHealth();await loadFridge()}
 function bind(){
- $$("[data-page]").forEach(b=>b.onclick=()=>showPage(b.dataset.page)); $$("[data-go]").forEach(b=>b.onclick=()=>showPage(b.dataset.go));
+ $$("[data-page]").forEach(b=>b.onclick=()=>showPage(b.dataset.page));$$("[data-go]").forEach(b=>b.onclick=()=>showPage(b.dataset.go));
  $("#lang").onchange=e=>changeLang(e.target.value);$("#lang2").onchange=e=>changeLang(e.target.value);
  const toggle=()=>{dark=!dark;localStorage.setItem("hm_theme",dark?"dark":"light");applyTheme()};$("#theme").onclick=toggle;$("#theme2").onclick=toggle;
  $("#accent").oninput=e=>{document.documentElement.style.setProperty("--accent",e.target.value);localStorage.setItem("hm_accent",e.target.value)};
  const acc=localStorage.getItem("hm_accent");if(acc){$("#accent").value=acc;document.documentElement.style.setProperty("--accent",acc)}
+ $("#plantSearch").oninput=async e=>{let a=await fetch(`/api/plants?lang=${lang}&q=${encodeURIComponent(e.target.value)}`).then(r=>r.json());renderPlants(a)};
  $("#recipeSearch").oninput=async e=>{let a=await fetch(`/api/recipes?lang=${lang}&q=${encodeURIComponent(e.target.value)}`).then(r=>r.json());renderRecipes(a)};
  $("#ingredientChips").onclick=e=>{let b=e.target.closest("[data-ing]");if(!b)return;selected.has(b.dataset.ing)?selected.delete(b.dataset.ing):selected.add(b.dataset.ing);b.classList.toggle("on")};
- $("#cookBtn").onclick=async()=>{let r=await fetch("/api/ai-cook",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({lang,ingredients:[...selected]})}).then(r=>r.json());$("#cookResult").innerHTML=(r.recipes||[]).map(x=>`<div class="card"><b>${x.name}</b> · ${x.match}% · ${x.minutes} min</div>`).join("")||`<p>${r.message||""}</p>`};
- $("#diagnoseForm").onsubmit=async e=>{e.preventDefault();let fd=new FormData();fd.append("query",$("#plantQuery").value);fd.append("lang",lang);if($("#plantImage").files[0])fd.append("image",$("#plantImage").files[0]);$("#diagnosisResult").innerHTML="✨ AI…";let r=await fetch("/api/diagnose",{method:"POST",body:fd}).then(r=>r.json());$("#diagnosisResult").innerHTML=`<div><span class="badge">${r.confidence}</span><h2>${r.title}</h2><p>${r.text}</p></div>`};
+ $("#cookBtn").onclick=async()=>{let max_missing=+$('input[name="missing"]:checked').value;let r=await fetch("/api/ai-cook",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({lang,ingredients:[...selected],max_missing})}).then(r=>r.json());$("#cookResult").innerHTML=(r.recipes||[]).map(x=>`<div class="card"><b>${x.name}</b> · ${x.match}% · ${x.minutes} min${x.missing.length?`<p>+ ${x.missing.map(id=>ingredients.find(i=>i.id===id)?.name||id).join(", ")}</p>`:""}</div>`).join("")};
+ $("#plantImage").onchange=e=>{let f=e.target.files[0];if(!f){$("#preview").innerHTML="";return}let u=URL.createObjectURL(f);$("#preview").innerHTML=`<img src="${u}">`};
+ $("#diagnoseForm").onsubmit=async e=>{e.preventDefault();let fd=new FormData();fd.append("query",$("#plantQuery").value);fd.append("lang",lang);if($("#plantImage").files[0])fd.append("image",$("#plantImage").files[0]);$("#diagnosisResult").innerHTML="✨ AI…";let r=await fetch("/api/diagnose",{method:"POST",body:fd}).then(r=>r.json());$("#diagnosisResult").innerHTML=`<div><span class="badge">${r.confidence}</span><h2>${r.title}</h2><div class="diagnosis-text">${escapeHtml(r.text||"")}</div><small>${r.source||""}${r.model?" · "+r.model:""}</small></div>`};
  $("#addFridge").onclick=async()=>{await fetch("/api/fridge",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({ingredient_id:$("#fridgeIngredient").value,amount:+$("#fridgeAmount").value,unit:$("#fridgeUnit").value,expires:$("#fridgeExpires").value})});loadFridge()};
+ $("#fridgeList").onclick=async e=>{let b=e.target.closest("[data-del]");if(!b)return;await fetch(`/api/fridge/${b.dataset.del}`,{method:"DELETE"});loadFridge()}
 }
-async function loadFridge(){let a=await fetch(`/api/fridge?lang=${lang}`).then(r=>r.json());$("#fridgeList").innerHTML=a.length?a.map(x=>`<div class="card"><div class="emoji">🧊</div><h3>${x.name}</h3><b>${x.amount} ${x.unit}</b><p>${x.expires||"—"}</p></div>`).join(""):`<div class="card">🧊 ${locale.available||""}</div>`}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m])).replace(/\n/g,"<br>")}
+async function loadFridge(){let a=await fetch(`/api/fridge?lang=${lang}`).then(r=>r.json());$("#fridgeList").innerHTML=a.length?a.map(x=>`<div class="card fridge-card"><button class="delete-btn" data-del="${x.id}">×</button><div class="emoji">🧊</div><h3>${x.name}</h3><b>${x.amount} ${x.unit}</b><p>${x.expires||"—"}</p></div>`).join(""):`<div class="card">🧊 ${locale.available||""}</div>`}
 boot();

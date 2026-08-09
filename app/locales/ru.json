@@ -28,5 +28,15 @@
   "limits": "Ограничения продуктов",
   "diagnose": "Проанализировать",
   "welcome": "Добрый вечер 👋",
-  "catalog": "Каталог знаний"
+  "catalog": "Каталог знаний",
+  "search_plants": "Поиск растений…",
+  "plant_catalog": "Каталог растений",
+  "problem_catalog": "Проблемы и вредители",
+  "real_ai": "AI Vision",
+  "ai_ready": "AI Vision активен",
+  "local_mode": "Локальная база симптомов",
+  "all_recipes": "Все рецепты",
+  "only_have": "Только из того, что есть",
+  "allow_missing": "Можно докупить 1 продукт",
+  "remove": "Удалить"
 }
