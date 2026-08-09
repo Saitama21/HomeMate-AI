@@ -6,7 +6,7 @@ import sqlite3, json, os, base64, mimetypes, httpx, re
 
 BASE=Path(__file__).parent
 DB=BASE/"data"/"homemate.db"
-app=FastAPI(title="HomeMate AI",version="0.2.0")
+app=FastAPI(title="HomeMate AI",version="0.2.1")
 app.mount("/static",StaticFiles(directory=BASE/"static"),name="static")
 
 def L(lang): return lang if lang in ("uk","ru","en") else "uk"
@@ -20,7 +20,7 @@ def index(): return FileResponse(BASE/"static"/"index.html")
 
 @app.get("/api/health")
 def health():
-    return {"ok":True,"app":"HomeMate AI","version":"0.2.0","languages":["uk","ru","en"],
+    return {"ok":True,"app":"HomeMate AI","version":"0.2.1","languages":["uk","ru","en"],
             "vision_enabled":bool(os.getenv("OPENAI_API_KEY"))}
 
 @app.get("/api/locale/{lang}")

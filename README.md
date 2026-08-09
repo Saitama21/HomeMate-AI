@@ -1,4 +1,4 @@
-# HomeMate AI v0.2.0 Knowledge Catalog
+# HomeMate AI v0.2.1 Knowledge Catalog
 
 Liquid Glass home assistant with UA/RU/EN localization.
 
@@ -20,3 +20,7 @@ This version keeps the proven v0.1.2 startup:
 Dockerfile -> start.sh -> Uvicorn -> Railway PORT
 Healthcheck: `/api/health`
 Do not set a custom Railway Start Command.
+
+
+## v0.2.1
+Full localization of catalog enum values for Ukrainian, Russian and English. Ukrainian mode no longer exposes English plant care/category labels.

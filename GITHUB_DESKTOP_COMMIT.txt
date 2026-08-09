@@ -1,13 +1,11 @@
 Summary:
-HomeMate AI v0.2.0 Knowledge Catalog + AI Vision
+HomeMate AI v0.2.1 Full UA/RU/EN Catalog Localization
 
 Description:
-- Added approved HomeMate AI app icon and PWA assets
-- Expanded catalog to 80 plants and 22 plant problems/pests
-- Added 62 normalized ingredients and 58 structured recipes
-- Added plant and recipe catalog search
-- Improved AI Chef matching with fridge-based recipe suggestions
-- Added photo preview and optional OpenAI Vision diagnosis
-- Kept local symptom diagnosis fallback when no API key is configured
-- Preserved proven Railway Docker/start.sh deployment
-- Updated HomeMate AI to v0.2.0
+- Fully localized plant catalog metadata
+- Ukrainian mode now shows plant family, light, watering and humidity in Ukrainian
+- Added RU and EN enum localization dictionaries
+- Localized recipe categories and time suffixes
+- Preserved HomeMate AI icon and PWA assets
+- Preserved Railway Docker/start.sh deployment
+- Updated HomeMate AI to v0.2.1
