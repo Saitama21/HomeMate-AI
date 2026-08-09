@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="uk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>HomeMate AI</title><link rel="stylesheet" href="/static/styles.css"></head>
+<body>
+<div class="aurora a1"></div><div class="aurora a2"></div>
+<div class="app">
+<aside class="sidebar glass">
+  <div class="brand"><div class="logo">⌂<span>✦</span></div><div><b>HomeMate <i>AI</i></b><small data-i18n="tagline"></small></div></div>
+  <nav>
+    <button class="nav active" data-page="home">⌂ <span data-i18n="home"></span></button>
+    <button class="nav" data-page="plants">🌿 <span data-i18n="plants"></span></button>
+    <button class="nav" data-page="recipes">🍳 <span data-i18n="recipes"></span></button>
+    <button class="nav" data-page="fridge">🧊 <span data-i18n="fridge"></span></button>
+    <button class="nav" data-page="saved">♥ <span data-i18n="saved"></span></button>
+  </nav>
+  <button class="nav settings" data-page="settings">⚙ <span data-i18n="settings"></span></button>
+</aside>
+<main>
+<header><div><small>HomeMate AI · v0.1.0 Foundation</small><h1 data-i18n="welcome"></h1></div><div class="top-actions"><select id="lang"><option value="uk">🇺🇦 UA</option><option value="ru">🇷🇺 RU</option><option value="en">🇬🇧 EN</option></select><button id="theme">◐</button></div></header>
+
+<section id="home" class="page active">
+ <div class="hero glass"><div><span class="eyebrow">HomeMate AI</span><h2 data-i18n="tagline"></h2><p>🌿 + 🍳 + 🧊 + 🤖</p></div><div class="hero-orb">⌂<span>✦</span></div></div>
+ <div class="grid4">
+  <button class="feature glass" data-go="plants"><b>🌿</b><h3 data-i18n="plants"></h3><p data-i18n="plant_hint"></p></button>
+  <button class="feature glass" data-go="recipes"><b>🍳</b><h3 data-i18n="recipes"></h3><p data-i18n="recipe_search"></p></button>
+  <button class="feature glass" data-go="fridge"><b>🧊</b><h3 data-i18n="my_fridge"></h3><p data-i18n="available"></p></button>
+  <button class="feature glass" data-go="saved"><b>♥</b><h3 data-i18n="saved"></h3><p data-i18n="history"></p></button>
+ </div>
+ <div class="glass catalog"><h3 data-i18n="catalog"></h3><div id="stats"></div></div>
+</section>
+
+<section id="plants" class="page">
+ <div class="section-title"><div><h2>🌿 <span data-i18n="plant_diagnosis"></span></h2><p data-i18n="plant_hint"></p></div></div>
+ <div class="two">
+  <form id="diagnoseForm" class="glass panel"><textarea id="plantQuery" placeholder="Що це за білий наліт пупирчатий на квітці?"></textarea><label class="upload">📷 <span data-i18n="take_photo"></span><input id="plantImage" type="file" accept="image/*"></label><button class="primary" data-i18n="diagnose"></button></form>
+  <div class="glass panel result" id="diagnosisResult"><div class="empty">🌱<br><span data-i18n="plant_hint"></span></div></div>
+ </div>
+ <h3 data-i18n="my_plants"></h3><div id="plantCards" class="cards"></div>
+</section>
+
+<section id="recipes" class="page">
+ <div class="section-title"><h2>🍳 <span data-i18n="recipes"></span></h2></div>
+ <div class="glass search"><input id="recipeSearch" data-placeholder="recipe_search"><button>⌕</button></div>
+ <div id="recipeCards" class="cards"></div>
+ <div class="glass ai-box"><h3>✨ <span data-i18n="ai_cook"></span></h3><p data-i18n="ai_cook_hint"></p><div id="ingredientChips" class="chips"></div><button id="cookBtn" class="primary" data-i18n="generate"></button><div id="cookResult" class="cook-result"></div></div>
+</section>
+
+<section id="fridge" class="page">
+ <div class="section-title"><h2>🧊 <span data-i18n="my_fridge"></span></h2></div>
+ <div class="glass panel"><div class="fridge-form"><select id="fridgeIngredient"></select><input id="fridgeAmount" type="number" value="1" min="0" step=".1"><select id="fridgeUnit"><option>pcs</option><option>g</option><option>kg</option><option>ml</option><option>l</option></select><input id="fridgeExpires" type="date"><button id="addFridge" class="primary" data-i18n="add_product"></button></div></div>
+ <div id="fridgeList" class="cards"></div>
+</section>
+
+<section id="saved" class="page"><div class="section-title"><h2>♥ <span data-i18n="saved"></span></h2></div><div class="glass panel"><p>HomeMate AI зберігатиме тут улюблені рецепти, діагнози та поради.</p></div></section>
+<section id="settings" class="page"><div class="section-title"><h2>⚙ <span data-i18n="settings"></span></h2></div><div class="glass panel settings-grid"><label><span data-i18n="language"></span><select id="lang2"><option value="uk">Українська</option><option value="ru">Русский</option><option value="en">English</option></select></label><label><span data-i18n="accent"></span><input id="accent" type="color" value="#8b5cf6"></label><label><span data-i18n="theme"></span><button id="theme2">◐</button></label></div></section>
+</main>
+<nav class="mobile-nav glass"><button data-page="home">⌂</button><button data-page="plants">🌿</button><button data-page="recipes">🍳</button><button data-page="fridge">🧊</button><button data-page="saved">♥</button></nav>
+</div><script src="/static/app.js"></script></body></html>

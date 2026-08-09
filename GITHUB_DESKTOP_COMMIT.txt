@@ -1,0 +1,7 @@
+Summary:
+HomeMate AI v0.1.0 Foundation
+
+Description:
+Initial HomeMate AI foundation built from scratch.
+Added Liquid Glass responsive UI, Ukrainian/Russian/English localization, Plants diagnostics, Recipes, AI Chef MVP, Fridge, Saved and Settings.
+Added starter knowledge catalogs, SQLite storage, FastAPI backend and Railway deployment configuration.
